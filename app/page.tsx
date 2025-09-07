@@ -6,33 +6,48 @@ import ProductCard from "./components/ProductCard";
 import LogoMarquee from "./components/LogoMarquee";
 
 export default function Home() {
-  // Master list of all products
-  const allProducts = [
-    { id: 1, name: "Apple iPhone 15", price: "₹79,999", image: "/iphone.png", link: "#" },
-    { id: 2, name: "Samsung Galaxy S23", price: "₹69,999", image: "/samsung.png", link: "#" },
-    { id: 3, name: "Sony Headphones", price: "₹3,999", image: "/headphones.png", link: "#" },
+  // Categories with products
+  const categories = [
+    {
+      name: "Mobiles",
+      products: [
+        { id: 1, name: "Apple iPhone 15", price: "₹79,999", image: "/iphone.png", link: "#" },
+        { id: 2, name: "Samsung Galaxy S23", price: "₹69,999", image: "/samsung.png", link: "#" },
+      ],
+    },
+    {
+      name: "Headphones",
+      products: [
+        { id: 3, name: "Sony Headphones", price: "₹3,999", image: "/headphones.png", link: "#" },
+      ],
+    },
   ];
 
-  // State for displayed products
-  const [products, setProducts] = useState(allProducts);
+  // State for filtered categories
+  const [filteredCategories, setFilteredCategories] = useState(categories);
   const [searchClicked, setSearchClicked] = useState(false);
 
-  // Filter products based on search query
+  // Handle search
   const handleSearch = (query: string) => {
-    setSearchClicked(true); // start zoom-out animation
+    setSearchClicked(true);
 
     setTimeout(() => {
       if (!query) {
-        setProducts(allProducts); // reset if search is empty
+        setFilteredCategories(categories);
       } else {
-        setProducts(
-          allProducts.filter((p) =>
-            p.name.toLowerCase().includes(query.toLowerCase())
-          )
-        );
+        const newCats = categories
+          .map((cat) => ({
+            ...cat,
+            products: cat.products.filter((p) =>
+              p.name.toLowerCase().includes(query.toLowerCase())
+            ),
+          }))
+          .filter((cat) => cat.products.length > 0);
+
+        setFilteredCategories(newCats);
       }
-      setSearchClicked(false); // end zoom-out animation
-    }, 300); // matches animation duration
+      setSearchClicked(false);
+    }, 300);
   };
 
   return (
@@ -44,18 +59,27 @@ export default function Home() {
 
       {/* Search Bar */}
       <SearchBar onSearch={handleSearch} />
+
+      {/* Marquee of logos */}
       <LogoMarquee />
 
+      {/* Product Categories */}
+      <div className="w-full max-w-6xl mt-8 space-y-10">
+        {filteredCategories.length > 0 ? (
+          filteredCategories.map((cat) => (
+            <div key={cat.name}>
+              <h2 className="text-2xl font-bold text-white mb-4">{cat.name}</h2>
 
-
-      {/* Products Display */}
-      <div className="flex flex-wrap justify-center mt-8">
-        {products.length > 0 ? (
-          products.map((p) => (
-            <ProductCard key={p.id} product={p} searchClicked={searchClicked} />
+              {/* Mobile: horizontal scroll | Desktop: grid */}
+              <div className="flex overflow-x-auto space-x-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-6 sm:space-x-0 scrollbar-hide">
+                {cat.products.map((p) => (
+                  <ProductCard key={p.id} product={p} searchClicked={searchClicked} />
+                ))}
+              </div>
+            </div>
           ))
         ) : (
-          <p className="text-white text-xl mt-6">No products found</p>
+          <p className="text-white text-xl mt-6 text-center">No products found</p>
         )}
       </div>
 
