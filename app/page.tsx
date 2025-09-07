@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import SearchBar from "./components/SearchBar";
 import ProductCard from "./components/ProductCard";
 import LogoMarquee from "./components/LogoMarquee";
@@ -9,7 +10,7 @@ export default function Home() {
   // Categories with products
   const categories = [
     {
-      name: "Mobiles",
+      name: "Mobile Phones",
       products: [
         { id: 1, name: "Apple iPhone 15", price: "₹79,999", image: "/iphone.png", link: "#" },
         { id: 2, name: "Samsung Galaxy S23", price: "₹69,999", image: "/samsung.png", link: "#" },
@@ -23,68 +24,63 @@ export default function Home() {
     },
   ];
 
-  // State for filtered categories
-  const [filteredCategories, setFilteredCategories] = useState(categories);
   const [searchClicked, setSearchClicked] = useState(false);
 
-  // Handle search
+  // Search handler
   const handleSearch = (query: string) => {
     setSearchClicked(true);
-
     setTimeout(() => {
-      if (!query) {
-        setFilteredCategories(categories);
-      } else {
-        const newCats = categories
-          .map((cat) => ({
-            ...cat,
-            products: cat.products.filter((p) =>
-              p.name.toLowerCase().includes(query.toLowerCase())
-            ),
-          }))
-          .filter((cat) => cat.products.length > 0);
-
-        setFilteredCategories(newCats);
-      }
+      // For now, search is only UI animation
       setSearchClicked(false);
     }, 300);
   };
 
   return (
-    <main className="flex flex-col items-center min-h-screen bg-gradient-to-r from-purple-500 to-pink-500 p-6">
+    <main className="flex flex-col min-h-screen bg-gradient-to-r from-purple-500 to-pink-500">
+      {/* Navbar */}
+      <header className="w-full flex items-center justify-between p-4 bg-white/10 backdrop-blur-md shadow-md">
+        <div className="flex items-center">
+          <Image
+            src="/pricoraa-logo.png"
+            alt="Pricoraa Logo"
+            width={140}
+            height={40}
+            className="object-contain"
+          />
+        </div>
+      </header>
+
       {/* Hero Section */}
-      <h1 className="text-5xl font-extrabold text-white drop-shadow-lg text-center">
-        PRICORAA – Compare. Choose. Save. 💸
-      </h1>
+      <div className="p-6 text-center">
+        <h1 className="text-5xl font-extrabold text-white drop-shadow-lg">
+          PRICORAA – Compare. Choose. Save. 💸
+        </h1>
 
-      {/* Search Bar */}
-      <SearchBar onSearch={handleSearch} />
+        {/* Search Bar */}
+        <div className="mt-6">
+          <SearchBar onSearch={handleSearch} />
+        </div>
 
-      {/* Marquee of logos */}
-      <LogoMarquee />
+        {/* Moving e-commerce logos */}
+        <LogoMarquee />
+      </div>
 
-      {/* Product Categories */}
-      <div className="w-full max-w-6xl mt-8 space-y-10">
-        {filteredCategories.length > 0 ? (
-          filteredCategories.map((cat) => (
-            <div key={cat.name}>
-              <h2 className="text-2xl font-bold text-white mb-4">{cat.name}</h2>
-
-              {/* Mobile: horizontal scroll | Desktop: grid */}
-              <div className="flex overflow-x-auto space-x-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-6 sm:space-x-0 scrollbar-hide">
-                {cat.products.map((p) => (
-                  <ProductCard key={p.id} product={p} searchClicked={searchClicked} />
-                ))}
-              </div>
+      {/* Products Section */}
+      <div className="flex flex-col gap-12 p-6">
+        {categories.map((category) => (
+          <section key={category.name}>
+            <h2 className="text-2xl font-bold text-white mb-4">{category.name}</h2>
+            <div className="flex overflow-x-auto gap-4 pb-4">
+              {category.products.map((p) => (
+                <ProductCard key={p.id} product={p} searchClicked={searchClicked} />
+              ))}
             </div>
-          ))
-        ) : (
-          <p className="text-white text-xl mt-6 text-center">No products found</p>
-        )}
+          </section>
+        ))}
       </div>
 
       {/* Footer */}
-      <footer className="mt-12 text-white text-sm">
+      <footer className="mt-12 text-white text-sm text-center p-4">
         Affiliate disclaimer: Some links may be affiliate links.
       </footer>
     </main>
