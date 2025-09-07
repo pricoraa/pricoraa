@@ -39,12 +39,12 @@ export default function Home() {
     <main className="flex flex-col min-h-screen bg-gradient-to-r from-purple-500 to-pink-500">
       {/* Navbar */}
       {/* Navbar */}
-<header className="w-full flex items-center px-4 py-2 bg-white/10 backdrop-blur-md shadow-md">
+<header className="w-full flex items-center px-2 py-1 bg-white/15 backdrop-blur-md shadow-md">
   <Image
     src="/pricoraa-logo.png"
     alt="Pricoraa Logo"
-    width={120}
-    height={35}
+    width={100}
+    height={30}
     className="object-contain"
   />
 </header>
