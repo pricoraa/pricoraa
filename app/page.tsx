@@ -38,17 +38,17 @@ export default function Home() {
   return (
     <main className="flex flex-col min-h-screen bg-gradient-to-r from-purple-500 to-pink-500">
       {/* Navbar */}
-      <header className="w-full flex items-center justify-between p-4 bg-white/10 backdrop-blur-md shadow-md">
-        <div className="flex items-center">
-          <Image
-            src="/pricoraa-logo.png"
-            alt="Pricoraa Logo"
-            width={140}
-            height={40}
-            className="object-contain"
-          />
-        </div>
-      </header>
+      {/* Navbar */}
+<header className="w-full flex items-center px-4 py-2 bg-white/10 backdrop-blur-md shadow-md">
+  <Image
+    src="/pricoraa-logo.png"
+    alt="Pricoraa Logo"
+    width={120}
+    height={35}
+    className="object-contain"
+  />
+</header>
+
 
       {/* Hero Section */}
       <div className="p-6 text-center">
