@@ -20,7 +20,7 @@ export default function LogoMarquee() {
       <div className="marquee-track">
         {logos.concat(logos).map((logo, index) => (
           <div key={index} className="marquee-item">
-            <Image src={logo} alt={`logo-${index}`} width={100} height={40} />
+            <Image src={logo} alt={`logo-${index}`} width={100} height={30} />
           </div>
         ))}
       </div>
